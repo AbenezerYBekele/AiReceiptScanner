@@ -29,6 +29,7 @@ app.get('/', (_req, res) => {
 
 // 1. UNCOMMENT and FIX the path for your transaction routes.
 // Your app is requesting '/transactions', not '/api/transactions'.
+ app.use("/summary/:userId", TransactionSummary);
 app.use("/transactions", transactionsRoute);
 
 // 2. DELETE the incorrect summary route.
