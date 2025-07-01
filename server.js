@@ -1,14 +1,14 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { sql, initDB } from './config/db.js';
-// import rateLimiter from './middleware/rateLimiter.js';
+import rateLimiter from './middleware/rateLimiter.js';
 import transactionsRoute from './routes/transactionsRoute.js';
 
 dotenv.config();
 
 const app = express();
 
-// app.use(rateLimiter);
+app.use(rateLimiter);
 app.use(express.json());
 
 app.use((req, _res, next) => {
