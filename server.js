@@ -23,8 +23,8 @@ app.get('/', (_req, res) => {
 });
 
 
-app.use("/api/transactions", transactionsRoute);
-app.use("/summary/:userId", TransactionSummary);
+app.use("/transactions", transactionsRoute);
+// app.use("/summary/:userId", TransactionSummary);
 
 let server;
 
