@@ -21,17 +21,25 @@ export async function getTransactionsbyUserId (req, res) {
 }
 
 
-export async function createTransaction (req, res) {
+export async function createTransaction(req, res) {
   try {
     const { title, amount, category, type, user_id } = req.body;
 
-    if (!title || !amount || !category || !type || !user_id) {
-      return res.status(400).json({ error: 'All fields are required' });
+    // Set default values if fields are missing
+    const finalTitle = title || 'Untitled';
+    const finalAmount = amount || 0;
+    const finalCategory = category || 'other';
+    const finalType = type || 'expense';
+    const finalUserId = user_id || null;
+
+    // Check: Do not insert if user_id is null (optional, based on your logic)
+    if (finalUserId === null) {
+      return res.status(400).json({ error: 'user_id is required to track ownership' });
     }
 
     const transaction = await sql`
       INSERT INTO transactions (user_id, title, amount, type, category)
-      VALUES (${user_id}, ${title}, ${amount}, ${type}, ${category})
+      VALUES (${finalUserId}, ${finalTitle}, ${finalAmount}, ${finalType}, ${finalCategory})
       RETURNING *
     `;
 
@@ -42,6 +50,7 @@ export async function createTransaction (req, res) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+
 
 export async function getTransactionSummary(req, res) {
   try {
